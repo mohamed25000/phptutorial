@@ -1,0 +1,22 @@
+{
+    "name": "mohamed-mennour/programmegio19",
+    "autoload": {
+        "psr-4": {
+            "MohamedMennour\\Programmegio19\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohamed Mennour",
+            "email": "mohamedmennour25@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
