@@ -6,38 +6,43 @@ namespace App\Controllers;
 
 use App\App;
 use App\DB;
+use App\Models\Invoice;
+use App\Models\SignUp;
+use App\Models\User;
+use App\Services\InvoiceService;
 use App\View;
 
 class HomeController
 {
     public function index(): View
     {
+        App::$container->get(InvoiceService::class)->process([], 25);
+
         $db = App::db();
-        $email = "mennour2500@gmail.com";
-        $name = "mohamed";
+
+        /*$email = "mohamedMENNOUR02050@outlook.fr";
+        $name = "MOHAMED MOHAMED";
         $amount = 25;
 
-        try {
+        $userModel = new User();
+        $invoiceModel = new Invoice();
 
+        $invoiceId = (new SignUp($userModel, $invoiceModel))->register(
+            [
+                "email" => $email,
+                "name" => $name,
+            ],
+            [
+                "amount" => $amount,
+            ]
+        );*/
+
+        /*try {
             $db->beginTransaction();
-            $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-            $newUserStmt = $db->prepare("INSERT INTO users
-                                (email, full_name, is_active, created_at)
-                                values (?, ?, 1, NOW())");
+            $userId = $userModel->create($email, $name, true);
+            $invoiceId = $invoiceModel->create($amount, $userId);
 
-            echo "<pre>";
-            var_dump($newUserStmt);
-            echo "</pre>";
-            $newUserStmt->execute([$email, $name]);
-
-            $userId = (int)$db->lastInsertId();
-
-            $newInvoiceStmt = $db->prepare("INSERT INTO invoices
-                                    (amount, user_id) 
-                                    values (?, ?)");
-
-            $newInvoiceStmt->execute([$amount, $userId]);
             $db->commit();
 
         } catch (\Throwable $e) {
@@ -45,18 +50,24 @@ class HomeController
                 $db->rollBack();
             }
             throw $e;
-        }
-        $fetchStmt = $db->prepare("SELECT invoices.id AS invoice_id, amount, user_id, full_name
-                            FROM invoices
-                            INNER JOIN users ON user_id = users.id
-                            WHERE email=?");
-
-        $fetchStmt->execute([$email]);
+        }*/
+        /*$fetchStmt = sprintf("SELECT invoices.id AS invoice_id,
+                            amount, user_id, full_name 
+                            FROM invoices INNER JOIN users 
+                            ON user_id = users.id WHERE email='%s'", $email);
 
         echo "<pre>";
-        var_dump($fetchStmt->fetch(\PDO::FETCH_ASSOC));
-        echo "</pre>";
+        var_dump($fetchStmt);
+        echo "</pre>";*/
+        ///** @var array $fetchStmt */
+        /*foreach ($db->getPdo()->query($fetchStmt) as $row) {
 
+            echo "<pre>";
+            var_dump($row);
+            echo "</pre>";
+        }*/
+
+        //return View::make("index", ['invoice' => $invoiceModel->find($invoiceId)]);
         return View::make("index");
     }
 }

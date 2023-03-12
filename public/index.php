@@ -18,16 +18,16 @@ require_once __DIR__ . "/../vendor/autoload.php";
     $router = new Router();
 
     $router
-        ->get("/", action: [HomeController::class, "index"])
-        ->get("/download", action: [HomeController::class, "download"])
-        ->post("/upload", action: [HomeController::class, "upload"])
-        ->get("/invoices", action: [InvoiceController::class, "index"])
-        ->get("/invoices/create", action: [InvoiceController::class, "create"])
-        ->post("/invoices/create", action: [InvoiceController::class, "store"]);
+        ->get("home", action: [HomeController::class, "index"])
+        ->get("download", action: [HomeController::class, "download"])
+        ->post("upload", action: [HomeController::class, "upload"])
+        ->get("invoices", action: [InvoiceController::class, "index"])
+        ->get("invoices/create", action: [InvoiceController::class, "create"])
+        ->post("invoices/create", action: [InvoiceController::class, "store"]);
 
 (new App(
     $router,
-    request: ["uri" => $_SERVER["REQUEST_URI"], "method" => $_SERVER["REQUEST_METHOD"]],
+    //request: ["uri" => $_SERVER["REQUEST_URI"], "method" => $_SERVER["REQUEST_METHOD"]],
     config: new Config($_ENV) ))
     ->run();
 

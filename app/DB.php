@@ -10,30 +10,37 @@ use PDO;
 
 class DB
 {
-    private PDO $pdo;
+    private static ?PDO $pdo = null;
     public function __construct(array $config)
     {
         $defaultOptions = [
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_DEFAULT_FETCH_MODE =>PDO::FETCH_ASSOC,
         ];
-        try {
+        if(! static::$pdo) {
+            try {
 
-            $this->pdo = new PDO(
-                $config["driver"] . ':host=' . $config["host"] .
-                ';dbname='. $config["database"] ,
-                $config["user"],
-                $config["pass"],
+                static::$pdo = new PDO(
+                    $config["driver"] . ':host=' . $config["host"] .
+                    ';dbname=' . $config["database"],
+                    $config["user"],
+                    $config["pass"],
                     $config["options"] ?? $defaultOptions
-            );
-            //$this->pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-        } catch (\PDOException $ex){
-            throw new \PDOException($ex->getMessage(), (int) $ex->getCode());
+                );
+                //$this->pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+            } catch (\PDOException $ex) {
+                throw new \PDOException($ex->getMessage(), (int)$ex->getCode());
+            }
         }
+    }
+
+    public static function getPdo(): ?PDO
+    {
+        return static::$pdo;
     }
 
     public function __call(string $name, array $arguments)
     {
-        call_user_func_array([$this->pdo, $name], $arguments);
+        call_user_func_array([static::$pdo, $name], $arguments);
     }
 }
